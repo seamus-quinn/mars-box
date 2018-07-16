@@ -6,10 +6,11 @@ $('.item-section').on('click', '.delete-button', deleteItem);
 $('.item-section').on('click', '.checkbox', togglePacked);
 
 function togglePacked() {
+  let packed = $(this).prop('checked')
   let name = $(this).parent().prev()
-  let packed = $(this).attr('value')
-  packed = parseBoolean(packed)
-  
+  let id = $(this).parent().parent().attr('value')
+
+  patchItem(name[0].innerText, packed, parseInt(id))
 }
 
 function parseBoolean(str) {
@@ -23,11 +24,14 @@ function handleSubmit(event) {
 }
 
 function addItem(name, packed, id) {
+  if (packed === true) {
+    packed = 'checked'
+  }
   itemSection.append(
-    `<div class="card" value="${id}">
+    `<div class="card" value=${id}>
       <h1 class="card-name">${name}</h1>
       <form class="checkbox-form">
-        <input class="checkbox" type="checkbox" value=${packed}>
+        <input class="checkbox" type="checkbox" ${packed}>
         <label for="checkbox">Packed</label>
       </form>
       <button class="delete-button">Delete</button>
@@ -35,11 +39,29 @@ function addItem(name, packed, id) {
   );
 }
 
+function patchItem(name, packed, id) {
+  const data = {
+    item: {
+      name,
+      packed
+    }
+  }
+  fetch(`/api/v1/items/${id}`, {
+    body: JSON.stringify(data),
+    headers: {
+      'content-type': 'application/json'
+    }, 
+    method: 'PATCH'
+  })
+  .then(response => console.log(response.json()))
+  .catch(error => console.log(error))
+}
+
 function postItem(name, packed) {
   const data = {
     item: {
       name,
-      packed: packed || false
+      packed: false
     }
   }
   fetch('/api/v1/items', {
