@@ -1,13 +1,11 @@
-const submitButton = $('.submit-button');
 const userInput = $('.input-text');
 const itemSection = $('.item-section');
 
-submitButton.on('click', addItem);
-
+$('.submit-button').on('click', addItem);
+$('.item-section').on('click', '.delete-button', deleteItem);
 
 function addItem(event) {
   event.preventDefault();
-  console.log(itemSection)
   itemSection.append(
     `<div class="card">
       <h1 class="card-name">${userInput.val()}</h1>
@@ -18,4 +16,8 @@ function addItem(event) {
       <button class="delete-button">Delete</button>
     </div>`
   );
+}
+
+function deleteItem() {
+  $(this).parent().remove();
 }
