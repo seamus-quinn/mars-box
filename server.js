@@ -19,8 +19,8 @@ app.listen(app.get('port'), () => {
 
 app.post('/api/v1/items', (request, response) => {
   const { item } = request.body;
-
-  for(let requiredParameter of ['name', 'packed']) {
+  console.log(item)
+  for(let requiredParameter of ['name']) {
     if (!item[requiredParameter]){
       return response
         .status(422)
