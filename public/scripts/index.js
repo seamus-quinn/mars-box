@@ -13,10 +13,6 @@ function togglePacked() {
   patchItem(name[0].innerText, packed, parseInt(id))
 }
 
-function parseBoolean(str) {
-  return str === 'true' ? true : false
-}
-
 function handleSubmit(event) {
   event.preventDefault();
   postItem(userInput.val(), false)
