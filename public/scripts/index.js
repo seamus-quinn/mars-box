@@ -3,10 +3,23 @@ const itemSection = $('.item-section');
 
 $('.submit-button').on('click', handleSubmit);
 $('.item-section').on('click', '.delete-button', deleteItem);
+$('.item-section').on('click', '.checkbox', togglePacked);
+
+function togglePacked() {
+  let name = $(this).parent().prev()
+  let packed = $(this).attr('value')
+  packed = parseBoolean(packed)
+  
+}
+
+function parseBoolean(str) {
+  return str === 'true' ? true : false
+}
 
 function handleSubmit(event) {
   event.preventDefault();
   postItem(userInput.val(), false)
+  userInput.val('')
 }
 
 function addItem(name, packed, id) {
@@ -14,7 +27,7 @@ function addItem(name, packed, id) {
     `<div class="card" value="${id}">
       <h1 class="card-name">${name}</h1>
       <form class="checkbox-form">
-        <input class="checkbox" type="checkbox" value="${packed}"/>
+        <input class="checkbox" type="checkbox" value=${packed}>
         <label for="checkbox">Packed</label>
       </form>
       <button class="delete-button">Delete</button>
