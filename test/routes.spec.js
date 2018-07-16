@@ -9,8 +9,6 @@ const database = require('knex')(configuration);
 
 chai.use(chaiHttp);
 
-chai.use(chaiHttp);
-
 describe('Client Routes', () => {
   it('should return the homepage', done => {
     chai.request(server)
@@ -79,6 +77,13 @@ describe('API Routes', () => {
         response.should.have.status(422)
       })
       done();
+    })
+  })
+
+  describe('GET /api/v1/items', () => {
+    it('should return all of the items', done => {
+      console.log(database)
+      done()
     })
   })
 });

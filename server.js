@@ -37,4 +37,22 @@ app.post('/api/v1/items', (request, response) => {
     });
 })
 
+app.get('/api/v1/items', (request, response) => {
+  database('items').select()
+    .then(items => {
+      response.status(200).json({ items })
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.delete('/api/v1/items/:id', (request, response) => {
+  const { id } = request.params;
+
+  database('items').where('id', id).del()
+    .then(() => response.sendStatus(204))
+    .catch(() => response.status(404).json({ Error: 'Cannot find matching id'}))
+})
+
 module.exports = app;
