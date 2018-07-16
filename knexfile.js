@@ -14,12 +14,12 @@ module.exports = {
 
   test: {
     client: 'pg',
-    connection: 'postgres://localhost/marsbox_test',
+    connection: 'postgres://localhost/marsbox',
     migrations: {
       directory: './db/migrations'
     },
     seeds: {
-      directory: './db/seeds/test'
+      directory: './db/seeds/'
     }
   }
 
