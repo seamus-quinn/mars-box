@@ -92,7 +92,7 @@ describe('API Routes', () => {
           (response.body[0]).should.have.property('name');
           (response.body[0].name).should.equal('GameBoy Advance SP');
           (response.body[0]).should.have.property('packed');
-          (response.body[0].gameName).should.equal(true);
+          (response.body[0].packed).should.equal(true);
           done();
         });
     })
