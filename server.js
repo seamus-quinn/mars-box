@@ -52,7 +52,7 @@ app.patch('/api/v1/items/:id', (request, response) => {
 
   database('items').where('id', id).update(item, 'id')
     .then(gameId => {
-      response.status(202).json({ id: gameId[0] });
+      response.sendStatus(204);
     })
     .catch(error => {
       response.status(500).json({ error });

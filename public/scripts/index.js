@@ -49,7 +49,7 @@ function patchItem(name, packed, id) {
     }, 
     method: 'PATCH'
   })
-  .then(response => console.log(response.json()))
+  .then(response => console.log(response))
   .catch(error => console.log(error))
 }
 
