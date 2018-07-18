@@ -50,6 +50,10 @@ app.patch('/api/v1/items/:id', (request, response) => {
   const { item } = request.body;
   const { id } = request.params;
 
+  if (item === undefined) {
+    return response.status(422).send({Error: 'Incomplete information in request body'})
+  }
+
   database('items').where('id', id).update(item, 'id')
     .then(gameId => {
       response.sendStatus(204);
