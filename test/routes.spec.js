@@ -116,12 +116,12 @@ describe('API Routes', () => {
         })
     })
 
-    it('should send a response with stats 500 if the id does not match one found in the database', done => {
+    it('should send a response with status 500 if the id does not match one found in the database', done => {
       chai.request(server)
         .get('/api/v1/items')
         .end((error, response) => {
           chai.request(server)
-            .patch('/api/v1/items/' + 'ab671')
+            .patch('/api/v1/items/' + 'ab')
             .send({
               item: {
                 name: 'Seamus'
@@ -129,6 +129,21 @@ describe('API Routes', () => {
             })
             .end((error, response) => {
               response.should.have.status(500);
+              done();
+            })
+        })
+    })
+
+    it('should send a response with status 422 the request body is missing information', done => {
+      chai.request(server)
+        .get('/api/v1/items')
+        .end((error, response) => {
+          chai.request(server)
+            .patch('/api/v1/items/' + response.body.items[0].id)
+            .send({})
+            .end((error, response) => {
+              console.log(response.status)
+              response.should.have.status(422);
               done();
             })
         })
