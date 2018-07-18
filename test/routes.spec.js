@@ -116,7 +116,7 @@ describe('API Routes', () => {
         })
     })
 
-    it('should send a response with status 500 if the id does not match one found in the database', done => {
+    it('should send a response with status 404 if the id does not match one found in the database', done => {
       chai.request(server)
         .get('/api/v1/items')
         .end((error, response) => {
@@ -128,7 +128,7 @@ describe('API Routes', () => {
               }
             })
             .end((error, response) => {
-              response.should.have.status(500);
+              response.should.have.status(404);
               done();
             })
         })

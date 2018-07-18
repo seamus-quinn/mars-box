@@ -59,7 +59,7 @@ app.patch('/api/v1/items/:id', (request, response) => {
       response.sendStatus(204);
     })
     .catch(error => {
-      response.status(500).json({ error });
+      response.status(404).json({ error });
     });
 });
 
