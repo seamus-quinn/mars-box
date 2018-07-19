@@ -9,7 +9,6 @@ const database = require('knex')(configuration);
 
 chai.use(chaiHttp);
 
-
 describe('Client Routes', () => {
   it('should return the homepage', done => {
     chai.request(server)
@@ -121,7 +120,7 @@ describe('API Routes', () => {
         .get('/api/v1/items')
         .end((error, response) => {
           chai.request(server)
-            .patch('/api/v1/items/' + 'ab')
+            .patch('/api/v1/items/' + '177')
             .send({
               item: {
                 name: 'Seamus'
@@ -129,6 +128,10 @@ describe('API Routes', () => {
             })
             .end((error, response) => {
               response.should.have.status(404);
+              response.should.be.json;
+              response.body.should.be.a('object');
+              response.body.should.have.property('error');
+              response.body.error.should.equal('No item with id: 177');
               done();
             })
         })
@@ -142,8 +145,11 @@ describe('API Routes', () => {
             .patch('/api/v1/items/' + response.body.items[0].id)
             .send({})
             .end((error, response) => {
-              console.log(response.status)
               response.should.have.status(422);
+              response.should.be.json;
+              response.body.should.be.a('object');
+              response.body.should.have.property('error');
+              response.body.error.should.equal('Incomplete information in request body');
               done();
             })
         })
@@ -164,14 +170,36 @@ describe('API Routes', () => {
         })
     })
 
-    it('should send respose with status 404 if there was an error', done => {
+    it('should send a response with status 404 if the id does not match one found in the database', done => {
+      chai.request(server)
+        .get('/api/v1/items')
+        .end((error, response) => {
+          chai.request(server)
+            .delete('/api/v1/items/' + '177')
+            .send({
+              item: {
+                name: 'Seamus'
+              }
+            })
+            .end((error, response) => {
+              response.should.have.status(404);
+              response.should.be.json;
+              response.body.should.be.a('object');
+              response.body.should.have.property('error');
+              response.body.error.should.equal('No item with id: 177');
+              done();
+            })
+        })
+    })
+
+    it('should send respose with status 500 if there was an error', done => {
       chai.request(server)
         .get('/api/v1/items')
         .end((error, response) => {
           chai.request(server)
             .delete('/api/v1/items/34fsfd')
             .end((error, response) => {
-              response.should.have.status(404);
+              response.should.have.status(500);
               done();
             })
         })
