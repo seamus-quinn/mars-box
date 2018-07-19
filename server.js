@@ -51,15 +51,19 @@ app.patch('/api/v1/items/:id', (request, response) => {
   const { id } = request.params;
 
   if (item === undefined) {
-    return response.status(422).send({Error: 'Incomplete information in request body'})
+    return response.status(422).send({error: 'Incomplete information in request body'})
   }
 
   database('items').where('id', id).update(item, 'id')
-    .then(gameId => {
-      response.sendStatus(204);
+    .then(itemId => {
+      if(!itemId.length) {
+        response.status(404).json({error: `No item with id: ${id}`})
+      } else {
+        response.sendStatus(204);
+      }
     })
     .catch(error => {
-      response.status(404).json({ error });
+      response.status(500).json({ error });
     });
 });
 
@@ -67,8 +71,14 @@ app.delete('/api/v1/items/:id', (request, response) => {
   const { id } = request.params;
 
   database('items').where('id', id).del()
-    .then(() => response.sendStatus(204))
-    .catch(() => response.status(404).json({ Error: 'Cannot find matching id'}))
+    .then(itemId => {
+      if(!itemId) {
+        response.status(404).json({ error: `No item with id: ${id}` })
+      } else {
+        response.sendStatus(204)
+      }
+    })
+    .catch(() => response.status(500).json({ Error: 'Cannot find matching id'}))
 })
 
 module.exports = app;
